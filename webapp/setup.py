@@ -1,6 +1,5 @@
 from flask import Flask, render_template, jsonify, request, make_response # API framework
 from marshmallow import Schema, fields, ValidationError # API validation
-from dotenv import load_dotenv # Environment variables
 import os # Environment variables
 import datetime as dt # Date and time management library
 import jwt # JSON Web Tokens
@@ -8,7 +7,6 @@ from includes.decorator import token_required # Decorator
 
 
 app = Flask(__name__)
-load_dotenv('../.env')
 
 
 @app.route('/', methods=['GET'])
@@ -47,10 +45,18 @@ def login():
                 'exp' : dt.datetime.utcnow() + dt.timedelta(hours=int(os.getenv('JWT_EXPIRES_HOURS')))
             }, 
             os.getenv('JWT_SECRET_KEY'), 
-            "HS256"
+            'HS256'
         )
         resp = make_response(jsonify({'message': 'success', 'token': token.decode('UTF-8')}), 200)
         resp.set_cookie('auth_token', token, path='/')
         return resp
     else:
         return jsonify({'message': 'Invalid email/password'}), 401
+
+
+# Flask run
+if __name__ == "__main__":
+    if not os.path.exists('.env'):
+        app.logger.critical('Please create a .env file like the .env.example file')
+        exit(1)
+    app.run(debug=True ,host='127.0.0.1', port=5000, load_dotenv=True)
