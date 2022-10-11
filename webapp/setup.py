@@ -23,7 +23,7 @@ def home():
 
 # Parameters validation for login()
 class LoginSchema(Schema):
-    email = fields.Email()
+    email = fields.Email(required=True)
     password = fields.String(required=True)
 
 
@@ -38,12 +38,12 @@ def login():
     
     # Check user/password combination
     if validated_data['email'].lower() == 'test@test.test' and validated_data['password'] == 'test':
-        # Generate token and set it as a cookie
+        # Generate token and set it as a cookiehours
         token = jwt.encode(
             {
                 'email' : 'test@test.test', 
                 'exp' : dt.datetime.utcnow() + dt.timedelta(hours=int(os.getenv('JWT_EXPIRES_HOURS')))
-            }, 
+            },
             os.getenv('JWT_SECRET_KEY'), 
             'HS256'
         )
