@@ -15,7 +15,7 @@ async function login(){
 		if (response.status === 200){
 			window.location.href = "/home";
 		} else {
-			alert("Login failed");
+			document.getElementById('error-msg').classList.remove("hidden");
 		}
 	});
 }
