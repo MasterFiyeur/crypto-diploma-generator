@@ -70,7 +70,7 @@ def login():
             os.getenv('JWT_SECRET_KEY'), 
             'HS256'
         )
-        resp = make_response(jsonify({'message': 'success', 'token': token.decode('UTF-8')}), 200)
+        resp = make_response(jsonify({'message': 'success', 'token': token}), 200)
         resp.set_cookie('auth_token', token, path='/')
         return resp
     else:
