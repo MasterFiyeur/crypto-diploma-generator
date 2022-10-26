@@ -1,4 +1,4 @@
 myenv/
-.env
+webapp/etc/settings.py
 
 __pycache__/
