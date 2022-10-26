@@ -4,42 +4,61 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/static/css/style.css">
-	<link rel="stylesheet" href="/static/css/login.css">
+	<link rel="stylesheet" href="/static/css/index.css">
 	<title>Login | Diploma generator</title>
 </head>
 <body>
-	<section>
-		<div class="imgBx">
-			<img src="/static/img/login-bg.jpg" alt="background image">
-		</div>
-		<div class="contentBx">
-			<div class="formBx">
-				<h2>Login</h2>
-				<form action="javascript:login()">
-					<div class="hidden" id="error-msg">Incorrect email/password</div>
-					<div class="inputBx">
-						<span>Email</span>
-						<input type="text" id="email" placeholder="Your email">
-					</div>
-					<div class="inputBx">
-						<span>Password</span>
-						<input type="password" id="password" placeholder="Your password">
-					</div>
-					<div class="inputBx">
-						<input type="submit" value="Login">
-					</div>
-				</form>
-				<div class="desc">
-					<p>
-						ING3 cryptography project - 2022
-					</p>
-					<p>
-						Teste Lucas, Kaczmarek William, Julien Théo
-					</p>
-				</div>
+	<div class="container">
+		<div class="brown-bg">
+			<div class="box create">
+				<h2>Create a diploma ?</h2>
+				<button id="createBtn" onclick="toggleForm()">Create</button>
+			</div>
+			<div class="box berify">
+				<h2>Verify a diploma ?</h2>
+				<button id="verifyBtn" onclick="toggleForm()">Verify</button>
 			</div>
 		</div>
-	</section>
-	<script src="/static/js/login.js"></script>
+		<div id="formBx">
+			<!-- Create toogle create/verify for when is responsive -->
+			<div class="form createForm">
+				<form action="javascript:askOTP()">
+					<h3>Create diploma</h3>
+					<div class="inputBx">
+						<span>First name</span>
+						<input type="text" id="firstName" placeholder="First name"/>
+					</div>
+					<div class="inputBx">
+						<span>Last name</span>
+						<input type="text" id="lastName" placeholder="Last name"/>
+					</div>
+					<div class="inputBx">
+						<span>Email</span>
+						<input type="text" id="email" placeholder="Email"/>
+					</div>
+					<div class="inputBx">
+						<span>Certificate name</span>
+						<input type="text" id="certificate" placeholder="Certificate name"/>
+					</div>
+					<div class="inputBx">
+						<input type="submit" value="Create">
+					</div>
+				</form>
+			</div>
+			<div class="form verifyForm">
+				<form action="javascript:verify()">
+					<h3>Verify diploma</h3>
+					<div class="inputBx">
+						<span>PNG file</span>
+						<input type="file" id="certificate" placeholder="PNG file"/>
+					</div>
+					<div class="inputBx">
+						<input type="submit" value="Verify">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="/static/js/index.js"></script>
 </body>
 </html>

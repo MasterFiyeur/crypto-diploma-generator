@@ -1,17 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
-    --primary: #AA892B;
-    --dark-primary: #8d6d15;
-    --light-primary: #f3dea0;
-    --secondary: #FFFFFF;
-    --grey: #686868;
-    --error: #f84a4a;
+	--primary: #AA892B;
+	--dark-primary: #8d6d15;
+	--light-primary: #f3dea0;
+	--secondary: #FFFFFF;
+	--grey: #686868;
+	--error: #f84a4a;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+
+.inputBx {
+	margin-bottom: 1.2em;
+}
+
+.inputBx span {
+	font-size: 16px;
+	margin-bottom: 5px;
+	display: inline-block;
+	color: var(--grey);
+	font-weight: 300;
+	letter-spacing: 1px;
+}
+
+.inputBx input {
+	width: 100%;
+	padding: 0.7em 1.2em;
+	outline: none;
+	font-weight: 400;
+	border: thin solid var(--grey);
+	font-size: 16px;
+	letter-spacing: 1px;
+	color: var(--grey);
+	background: transparent;
+	border-radius: 30px;
+}
+.inputBx input[type="submit"] {
+	background: var(--primary);
+	color: #FFFFFF;
+	outline: none;
+	border: none;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.inputBx button:hover,
+.inputBx input[type="submit"]:hover {
+	background: var(--dark-primary);
 }

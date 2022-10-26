@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet" href="/static/css/login.css">
+	<title>Login | Diploma generator</title>
+</head>
+<body>
+	<section>
+		<div class="imgBx">
+			<img src="/static/img/login-bg.jpg" alt="background image">
+		</div>
+		<div class="contentBx">
+			<div class="formBx">
+				<h2>Login</h2>
+				<form action="javascript:login()">
+					<div class="hidden" id="error-msg">Incorrect email/password</div>
+					<div class="inputBx">
+						<span>Email</span>
+						<input type="text" id="email" placeholder="Your email">
+					</div>
+					<div class="inputBx">
+						<span>Password</span>
+						<input type="password" id="password" placeholder="Your password">
+					</div>
+					<div class="inputBx">
+						<input type="submit" value="Login">
+					</div>
+				</form>
+				<div class="desc">
+					<p>
+						ING3 cryptography project - 2022
+					</p>
+					<p>
+						Teste Lucas, Kaczmarek William, Julien Théo
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script src="/static/js/login.js"></script>
+</body>
+</html>

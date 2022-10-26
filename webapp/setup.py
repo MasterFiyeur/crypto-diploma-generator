@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, make_response # API framework
+from flask import Flask, render_template, jsonify, request, make_response, redirect # API framework
 from marshmallow import Schema, fields, ValidationError # API validation
 import os # Environment variables
 import datetime as dt # Date and time management library
@@ -30,14 +30,17 @@ def send_mail():
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template('index.html')
+    if ( request.cookies.get('auth_token')):
+        return redirect('/home', 302)
+    return render_template('login.html')
 
 
 # Authentication token needed
 @app.route('/home', methods=['GET'])
 @token_required
 def home():
-    return "Homepage!"
+    return render_template('index.html')
+
 
 
 # Parameters validation for login()
