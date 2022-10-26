@@ -17,10 +17,9 @@ mail = Mail(app)
 
 @app.route('/mail', methods=['GET'])
 def send_mail():
-    print(app.config)
     try:
         msg = Message('Hello', sender = CONFIG['SMTP_CONFIG']['MAIL_USERNAME'], recipients = ['catherine.dicki98@ethereal.email'])
-        msg.body = "Hello Flask message sent from Flask-Maisdfsdfsdf"
+        msg.body = "Hello Flask message sent from Flask-Mail"
         app.logger.debug('Sending mail...')
         mail.send(msg)
         app.logger.debug('mail sended')
