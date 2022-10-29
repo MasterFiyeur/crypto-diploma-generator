@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet" href="/static/css/OTP.css">
+	<title>OTP | Diploma generator</title>
+</head>
+<body>
+	<div class="container">
+		<div class="text">
+			<div id="code" onclick="navigator.clipboard.writeText(this.innerText)" title="Copy">
+				012345
+			</div>
+			<div id="timer">
+			</div>
+		</div>
+		<canvas id="canvas" width="300" height="300"></canvas>
+	</div>
+	<script src="/static/js/OTP.js"></script>
+</body>
+</html>

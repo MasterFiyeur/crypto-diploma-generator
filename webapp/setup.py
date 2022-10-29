@@ -37,7 +37,7 @@ def login_page():
 @app.route('/One-Time-Password', methods=['GET'])
 @token_required
 def OTP_page():
-    return "One-Time-Password"
+    return render_template('OTP.html')
 
 
 # Authentication token needed
