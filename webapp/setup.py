@@ -88,9 +88,7 @@ def get_key(user):
     # Return the key associated to the user
     return jsonify({'key': "KRUGS4ZANFZSAYJAONSWG4TFOQQGWZLZ"})
 
-@app.route('/api/test', methods=['GET'])
-def test():
-    return jsonify({'message': totp("KRUGS4ZANFZSAYJAONSWG4TFOQQGWZLZ")})
+# TODO : Add a route to generate a certificate and verify Time OTP with totp(key_base32_encoded)
 
 # Flask run
 if __name__ == "__main__":
