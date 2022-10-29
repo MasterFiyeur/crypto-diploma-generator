@@ -85,21 +85,49 @@ body.active {
 	transition: .5s;
 }
 
-#formBx .createForm {
+#formBx .form .swapBtnVerify,
+#formBx .form .swapBtnCreate {
+	display: none;
+	cursor: pointer;
+	width: 100%;
+	position: relative;
+	padding: 0.5em 2em;
+	margin-bottom: 0.5em;
+	background: var(--light-primary);
+	color: #fff;
+	border: none;
+	text-decoration: none;
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 1.2em;
+	letter-spacing: 2px;
+}
+
+#formBx .form .swapBtnVerify{
+	clip-path: polygon(17% 1%, 100% 0, 88% 51%, 100% 100%, 17% 100%, 0 51%);
+	
+}
+
+#formBx .form .swapBtnCreate {
+	clip-path: polygon(0 0, 83% 1%, 100% 50%, 83% 100%, 0 100%, 12% 50%);
+}
+
+
+#formBx .verifyForm {
 	transition-delay: .25s;
 }
 
-#formBx.active .createForm {
+#formBx.active .verifyForm {
 	left: -100%;
 	transition-delay: 0s;
 }
 
-#formBx .verifyForm {
+#formBx .createForm {
 	transition-delay: 0s;
 	left: 100%;
 }
 
-#formBx.active .verifyForm {
+#formBx.active .createForm {
 	transition-delay: .25s;
 	left: 0;
 }
@@ -132,8 +160,9 @@ body.active {
 
 @media (max-width: 768px) {
 	.container {
-		max-width: 25em;
-		height: 40;
+		margin: 0;
+		width: 100%;
+		min-height: 100vh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -153,4 +182,19 @@ body.active {
 	#formBx.active {
 		left: 0;
 	}
+
+
+	#formBx .form .swapBtnVerify,
+	#formBx .form .swapBtnCreate {
+		display: block;
+	}
+
+	#formBx .form {
+		min-height: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: column;
+	}
+
 }
