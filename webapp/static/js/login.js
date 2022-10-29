@@ -13,7 +13,7 @@ async function login(){
 		})
 	}).then(response => {
 		if (response.status === 200){
-			window.location.href = "/home";
+			window.location.href = "/One-Time-Password";
 		} else {
 			document.getElementById('error-msg').classList.remove("hidden");
 		}

@@ -28,17 +28,21 @@ def send_mail():
     return "Check Your Inbox !!!"
 
 
-@app.route('/', methods=['GET'])
-def index():
+@app.route('/login', methods=['GET'])
+def login_page():
     if ( request.cookies.get('auth_token')):
-        return redirect('/home', 302)
+        return redirect('/One-Time-Password', 302)
     return render_template('login.html')
+
+@app.route('/One-Time-Password', methods=['GET'])
+@token_required
+def OTP_page():
+    return "One-Time-Password"
 
 
 # Authentication token needed
-@app.route('/home', methods=['GET'])
-@token_required
-def home():
+@app.route('/', methods=['GET'])
+def index_page():
     return render_template('index.html')
 
 
