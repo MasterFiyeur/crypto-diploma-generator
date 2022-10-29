@@ -1,7 +1,6 @@
 async function login(){
 	let email = document.getElementById("email").value;
 	let password = document.getElementById("password").value;
-	console.log(email, password);
 	fetch("/api/login", {
 		method: "POST",
 		headers: {
@@ -13,7 +12,7 @@ async function login(){
 		})
 	}).then(response => {
 		if (response.status === 200){
-			window.location.href = "/home";
+			window.location.href = "/One-Time-Password";
 		} else {
 			document.getElementById('error-msg').classList.remove("hidden");
 		}

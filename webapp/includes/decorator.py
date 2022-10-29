@@ -10,13 +10,14 @@ def token_required(f):
    def decorator(*args, **kwargs):
         token = request.cookies.get('auth_token')
         if token is None:
-            resp = redirect('/', 303)
+            resp = redirect('/login', 303)
             resp.set_cookie('auth_token', '', expires=0)
         try:
             data = jwt.decode(token, CONFIG['JWT_SECRET_KEY'], algorithms=["HS256"])
         except:
-            resp = redirect('/', 303)
+            resp = redirect('/login', 303)
             resp.set_cookie('auth_token', '', expires=0)
             return resp
-        return f(*args, **kwargs)
+        # TODO : Return the user (not only email)
+        return f({'email':'test@test.test'},*args, **kwargs)
    return decorator
