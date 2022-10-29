@@ -1,18 +1,21 @@
-var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext('2d');
-var timer = document.getElementById('timer');
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const timer = document.getElementById('timer');
+
+let code = "000000";
+let key = "12345678901234567890123456789012";
 
 function degToRad(degree) {
-	var factor = Math.PI / 180;
+	let factor = Math.PI / 180;
 	return degree * factor;
 }
 
 function renderTime() {
-	var now = new Date();
-	var seconds = now.getSeconds();
-	var milliseconds = now.getMilliseconds();
-  
-	var newSeconds = seconds+(milliseconds/1000);
+	let now = new Date();
+	let seconds = now.getSeconds();
+	let milliseconds = now.getMilliseconds();
+
+	let newSeconds = seconds+(milliseconds/1000);
 	timer.innerHTML = (30 - (seconds % 30)) + 's';
 
 	ctx.fillStyle = '#F3DEA0';
@@ -24,15 +27,40 @@ function renderTime() {
 	ctx.stroke();
 }
 
+function updateCode() {
+	document.getElementById('code').innerHTML = code;
+	/* Calculate code for next update */
+	code = "123456";
+	console.log("Code updated " + new Date().toLocaleTimeString());
+}
 
 function init() {
+	/* Get key */
+	fetch('/api/key').then(function(response) {
+		return response.json();
+	}).then(function(data) {
+		key = data.key;
+	});
+
+	/* Set code */
+	updateCode();
+
+	/* Setup canva */
 	ctx.strokeStyle = '#8D6D15';
 	ctx.lineWidth = 17;
 	ctx.lineCap = 'round';
 	ctx.shadowBlur = 5;
 	ctx.shadowColor = '#8D6D15';
+
+	/* Update canva render */
 	setInterval(renderTime, 40);
-	// Set interval 30s to refresh code with setTimeout to fit exactly to 30s base on actual time
+
+	/* Update code every 30s */
+	let timeout = 30 - (new Date().getSeconds() % 30);
+	setTimeout(() => {	
+		setInterval(updateCode, 30000)
+		updateCode();
+	}, timeout * 1000);
 }
 
 init();

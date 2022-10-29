@@ -36,7 +36,7 @@ def login_page():
 
 @app.route('/One-Time-Password', methods=['GET'])
 @token_required
-def OTP_page():
+def OTP_page(user):
     return render_template('OTP.html')
 
 
@@ -73,12 +73,19 @@ def login():
             CONFIG['JWT_SECRET_KEY'], 
             'HS256'
         )
+        # TODO : Generate random key for OTP and put it in database
         resp = make_response(jsonify({'message': 'success', 'token': token}), 200)
         resp.set_cookie('auth_token', token, path='/')
         return resp
     else:
         return jsonify({'message': 'Invalid email/password'}), 401
 
+
+@app.route('/api/key', methods=['GET'])
+@token_required
+def get_key(user):
+    # Return the key associated to the user
+    return jsonify({'key': "This is a secret key"})
 
 # Flask run
 if __name__ == "__main__":

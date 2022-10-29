@@ -18,5 +18,5 @@ def token_required(f):
             resp = redirect('/login', 303)
             resp.set_cookie('auth_token', '', expires=0)
             return resp
-        return f(*args, **kwargs)
+        return f({'email':'test@test.test'},*args, **kwargs)
    return decorator
