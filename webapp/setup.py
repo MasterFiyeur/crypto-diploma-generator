@@ -6,6 +6,7 @@ import jwt # JSON Web Tokens
 from includes.decorator import token_required # Decorator
 from flask_mail import Mail, Message
 from etc.settings import CONFIG # Settings
+from includes.totp import totp
 
 
 
@@ -85,7 +86,11 @@ def login():
 @token_required
 def get_key(user):
     # Return the key associated to the user
-    return jsonify({'key': "This is a secret key"})
+    return jsonify({'key': "KRUGS4ZANFZSAYJAONSWG4TFOQQGWZLZ"})
+
+@app.route('/api/test', methods=['GET'])
+def test():
+    return jsonify({'message': totp("KRUGS4ZANFZSAYJAONSWG4TFOQQGWZLZ")})
 
 # Flask run
 if __name__ == "__main__":
