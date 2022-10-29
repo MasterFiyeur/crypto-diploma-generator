@@ -85,4 +85,7 @@ if __name__ == "__main__":
     if not os.path.exists('webapp/etc/settings.py'):
         app.logger.critical('Please create a webapp/etc/settings.py file like the settings_example.py file')
         exit(1)
+    if not os.path.exists('webapp/etc/rsa.pem'):
+        app.logger.critical('Please create a private RSA key in webapp/etc/rsa.pem and put the public key in webapp/static/crypt/rsa.pub')
+        exit(1)
     app.run(debug=True ,host='127.0.0.1', port=5000)
