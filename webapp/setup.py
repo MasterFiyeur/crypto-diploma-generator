@@ -4,28 +4,20 @@ import os # Environment variables
 import datetime as dt # Date and time management library
 import jwt # JSON Web Tokens
 from includes.decorator import token_required # Decorator
-from flask_mail import Mail, Message
 from etc.settings import CONFIG # Settings
+from includes.mailer import send_mail # Mailer
 from includes.totp import totp
 
-
-
 app = Flask(__name__)
-app.config.update(CONFIG['SMTP_CONFIG'])
-
-mail = Mail(app)
 
 
 @app.route('/mail', methods=['GET'])
-def send_mail():
+def mail():
     try:
-        msg = Message('Hello', sender = CONFIG['SMTP_CONFIG']['MAIL_USERNAME'], recipients = ['catherine.dicki98@ethereal.email'])
-        msg.body = "Hello Flask message sent from Flask-Mail"
-        app.logger.debug('Sending mail...')
-        mail.send(msg)
-        app.logger.debug('mail sended')
+        send_mail()
     except Exception as e:
         raise e
+
     return "Check Your Inbox !!!"
 
 
