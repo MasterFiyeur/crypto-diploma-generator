@@ -28,6 +28,13 @@ function renderTime() {
 	ctx.stroke();
 }
 
+function updateCodeIfIsTime() {
+	let seconds = new Date().getSeconds();
+	if (seconds % 30 == 0) {
+		updateCode();
+	}
+}
+
 /* Update the OTP */
 function updateCode() {
 	code = getOTP(secret_key);
@@ -59,7 +66,7 @@ function init() {
 		/* Update code every 30s */
 		let timeout = 30 - (new Date().getSeconds() % 30);
 		setTimeout(() => {	
-			setInterval(updateCode, 30000)
+			setInterval(updateCodeIfIsTime, 1000)
 			updateCode();
 		}, timeout * 1000);
 	});

@@ -7,6 +7,7 @@ from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
 from includes.totp import totp
+from includes.steganography import user_data_to_string
 
 app = Flask(__name__)
 
@@ -98,7 +99,11 @@ def create_diploma():
         return jsonify(err.messages), 400
 
     if validated_data['OTP'] == totp(CONFIG['OTP_KEY']):
-        # TODO : Generate PNG file and send it by email
+        # Create string to hide
+        data_to_hide = user_data_to_string(validated_data['firstName'], validated_data['lastName'], validated_data['certificateName'])
+        # TODO : Hide data in PNG file
+        # TODO : Create QR code with our signature
+        # TODO : Send PNG file by email
         return jsonify({'message': 'success'}), 200
     else :
         return jsonify({'message': 'Invalid OTP'}), 403

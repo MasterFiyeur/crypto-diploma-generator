@@ -89,6 +89,7 @@ function createDiploma() {
           OTPSuccessMsg.innerHTML = `Diploma created for ${firstName.value.trim()} ${lastName.value.trim()}.<br/>He/She will receive an email containing the diploma.`;
           OTPModal.hide();
           successModal.show();
+          OTPErrorMsg.classList.remove('active');
         });
         break;
       case 403:
