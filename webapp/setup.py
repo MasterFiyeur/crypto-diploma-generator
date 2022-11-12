@@ -78,9 +78,30 @@ def login():
 @token_required
 def get_key(user):
     # Return the key associated to the user
-    return jsonify({'key': "KRUGS4ZANFZSAYJAONSWG4TFOQQGWZLZ"})
+    return jsonify({'key': CONFIG['OTP_KEY']})
 
-# TODO : Add a route to generate a certificate and verify Time OTP with totp(key_base32_encoded)
+
+class CreateSchema(Schema):
+    firstName = fields.String(required=True)
+    lastName = fields.String(required=True)
+    email = fields.Email(required=True)
+    certificateName = fields.String(required=True)
+    OTP = fields.String(required=True)
+
+@app.route('/api/create', methods=['POST'])
+def create_diploma():
+    # Validate parameters
+    schema = CreateSchema()
+    try:
+        validated_data = schema.load(request.json)
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+
+    if validated_data['OTP'] == totp(CONFIG['OTP_KEY']):
+        # TODO : Generate PNG file and send it by email
+        return jsonify({'message': 'success'}), 200
+    else :
+        return jsonify({'message': 'Invalid OTP'}), 403
 
 # Flask run
 if __name__ == "__main__":

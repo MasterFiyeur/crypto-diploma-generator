@@ -16,6 +16,7 @@ body.active {
 	width: 50em;
 	height: 32em;
 	margin: 1em;
+	padding: 0;
 }
 
 .brown-bg {
@@ -156,6 +157,58 @@ body.active {
 
 #formBx .form form .inputBx input{
 	padding: 0.5em 0.7em;
+}
+
+.modal-body .inputBx {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 0;
+}
+
+.modal-body .error-msg {
+	margin-bottom: 0.5em;
+	text-align: center;
+	color: var(--error);
+	display: none;
+}
+
+.modal-body .error-msg.active {
+	display: block;
+}
+
+.inputBx input.error {
+	border-color: var(--error);
+}
+
+#OTP {
+	width: 6.7em;
+	text-align: center;
+}
+
+.success-modal div p {
+	color: var(--success);
+}
+
+.success-modal-button,
+.OTP-buttons button {
+	padding: 0.7em 1.2em;
+	outline: none;
+	border: none;
+	font-weight: 500;
+	font-size: 16px;
+	letter-spacing: 1px;
+	border-radius: 30px;
+	cursor: pointer;
+	color: #FFFFFF;
+}
+
+.success-modal-button,
+.OTP-buttons button:first-child {
+	background: var(--grey);
+}
+
+.OTP-buttons button:last-child {
+	background: var(--dark-primary);
 }
 
 @media (max-width: 768px) {

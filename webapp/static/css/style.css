@@ -7,6 +7,7 @@
 	--secondary: #FFFFFF;
 	--grey: #686868;
 	--error: #F84A4A;
+	--success: #00C853;
 }
 
 * {
@@ -42,6 +43,8 @@
 	background: transparent;
 	border-radius: 30px;
 }
+
+.inputBx button,
 .inputBx input[type="submit"] {
 	background: var(--primary);
 	color: #FFFFFF;
