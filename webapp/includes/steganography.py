@@ -28,6 +28,6 @@ def user_data_to_string(firstName, lastName, diploma):
     # Removing temporary files
     os.remove("tmp/" + fileName + ".tsq")
     os.remove("tmp/" + fileName + ".data")
-    
+    # Final size : 5494 bytes
     # Format : 'firstname;lastname;diploma' (filled by \00 to length 64) then 'timestamp_signature'
     return str.encode(toHide) + r.content
