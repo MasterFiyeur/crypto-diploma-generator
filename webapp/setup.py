@@ -3,11 +3,12 @@ from marshmallow import Schema, fields, ValidationError # API validation
 import os # Environment variables
 import datetime as dt # Date and time management library
 import jwt # JSON Web Tokens
+import uuid
 from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
 from includes.totp import totp
-from includes.steganography import user_data_to_string
+from includes.steganography import hide_data_in_png
 
 app = Flask(__name__)
 
@@ -100,8 +101,8 @@ def create_diploma():
 
     if validated_data['OTP'] == totp(CONFIG['OTP_KEY']):
         # Create string to hide
-        data_to_hide = user_data_to_string(validated_data['firstName'], validated_data['lastName'], validated_data['certificateName'])
-        # TODO : Hide data in PNG file
+        fileName = str(uuid.uuid4())
+        hide_data_in_png(fileName, validated_data['firstName'], validated_data['lastName'], validated_data['certificateName'])
         # TODO : Create QR code with our signature
         # TODO : Send PNG file by email
         return jsonify({'message': 'success'}), 200

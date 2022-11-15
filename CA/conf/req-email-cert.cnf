@@ -1,0 +1,45 @@
+[ req ]
+default_bits		= 2048
+default_keyfile 	= private/email.key
+default_md		= sha256
+distinguished_name	= req_distinguished_name
+x509_extensions	= email_req
+string_mask		= nombstr
+
+[ req_distinguished_name ]
+countryName			= Pays
+countryName_default		= FR
+countryName_min		= 2
+countryName_max		= 2
+
+stateOrProvinceName		= Etat, province ou departement
+stateOrProvinceName_default	= IDF 
+
+localityName			= Ville
+localityName_default		= Cergy 
+
+organizationName		= Organisation
+organizationName_default	= CYTECH 
+
+organizationalUnitName		= Unite organisationnelle
+organizationalUnitName_default = CYBER
+
+commonName			= Nom commun (ex: nom de la root CA)
+commonName_max			= 64
+commonName_default		= CYTECH CYBER email
+
+emailAddress			= Adresse mail
+emailAddress_max		= 64
+emailAddress_default		= julientheo@cy-tech.fr
+
+
+
+[ email_req ]
+
+basicConstraints = CA:FALSE
+authorityKeyIdentifier = keyid
+subjectKeyIdentifier = hash
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = critical, emailProtection
+authorityKeyIdentifier = keyid
+nsCertType		= emailCA, objsign
