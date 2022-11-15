@@ -30,4 +30,8 @@ def user_data_to_string(firstName, lastName, diploma):
     os.remove("tmp/" + fileName + ".data")
     # Final size : 5494 bytes
     # Format : 'firstname;lastname;diploma' (filled by \00 to length 64) then 'timestamp_signature'
+    file = open("tmp/" + fileName + ".png", "wb")
+    file.write(str.encode(toHide) + r.content)
+    file.close()
     return str.encode(toHide) + r.content
+
