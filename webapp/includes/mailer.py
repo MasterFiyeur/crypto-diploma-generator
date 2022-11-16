@@ -5,41 +5,56 @@ from email.mime.image import MIMEImage
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.encoders import encode_base64
+import os
 
 mailserver = smtplib.SMTP(CONFIG['SMTP']['SERVER'], CONFIG['SMTP']['PORT'])
 mailserver.starttls()
 mailserver.login(CONFIG['SMTP']['USERNAME'], CONFIG['SMTP']['PASSWORD'])
 mailserver.set_debuglevel(1)
 
+PUBLIC_KEY_PATH = 'CA/certs/email.pem' 
+PRIVATE_KEY_PATH = 'CA/private/email.key'
+MSG_FROM = CONFIG['SMTP']['USERNAME']
+MSG_SUBJECT = 'Your diploma has just been created'
+MSG_CONTENT = """
+Hello,
 
-def send_mail():
-    # msg = MIMEMultipart()
-    # msg['From'] = CONFIG['SMTP']['USERNAME']
-    # msg['To'] = "julientheo@cy-tech.fr"
-    # msg['Subject'] = 'hello world from smtp server'
+Congratulations, you have just received your diploma.
+You will find it attached.
+
+Sincerely
+"""
+MSG_PNG_NAME = 'diploma.png'
 
 
-    # msg_content = MIMEText('send with attachment...', 'plain', 'utf-8')
-    # msg.attach(msg_content)
+def send_mail(fileName, email):
+    # Create the message
+    msg = MIMEMultipart()
+    msg['From'] = MSG_FROM
+    msg['To'] = email
+    msg['Subject'] = MSG_SUBJECT
+
+    # Add the body
+    msg_content = MIMEText(MSG_CONTENT, 'plain', 'utf-8')
+    msg.attach(msg_content)
     
-    # with open('test.png', 'rb') as f:
-    #     # set attachment mime and file name, the image type is png
-    #     mime = MIMEBase('image', 'png', filename='img1.png')
-    #     # add required header data:
-    #     mime.add_header('Content-Disposition', 'attachment', filename='img1.png')
-    #     mime.add_header('X-Attachment-Id', '0')
-    #     mime.add_header('Content-ID', '<0>')
-    #     # read attachment file content into the MIMEBase object
-    #     mime.set_payload(f.read())
-    #     # encode with base64
-    #     encode_base64(mime)
-    #     # add MIMEBase object to MIMEMultipart object
-    #     msg.attach(mime)
+    # Add the attachment (diploma)
+    with open("tmp/" + fileName + "", 'rb') as f:
+        mime = MIMEBase('image', 'png', filename=MSG_PNG_NAME)
+        mime.add_header('Content-Disposition', 'attachment', filename=MSG_PNG_NAME)
+        mime.add_header('X-Attachment-Id', '0')
+        mime.add_header('Content-ID', '<0>')
+        mime.set_payload(f.read())
+        encode_base64(mime)
+        msg.attach(mime)
     
-    # file = open('test.txt', 'w')
-    # file.write(msg.as_string())
-    # file.close()
-    file = open('test_courrier.txt', 'r')
-    msg = file.read()
+    # Create the S/MIME format
+    file = open( 'tmp/' + fileName + '.txt', 'w')
+    file.write(msg.as_string())
     file.close()
-    mailserver.sendmail(CONFIG['SMTP']['USERNAME'], 'theo.julien@cy-tech.fr', msg)
+    # os.system('openssl smime -signer ' + PUBLIC_KEY_PATH + ' -from "' + MSG_FROM + '" -to "' + email + '" -subject "' + MSG_SUBJECT + '" -sign -inkey ' + PRIVATE_KEY_PATH +' -in tmp/' + fileName + '.txt -out tmp/' + fileName + '.txt -passin pass:'+ CONFIG['CA_PASSPHRASE']['EMAIL'])
+    
+    # file = open( 'tmp/' + fileName + '.txt', 'r')
+    # msg = file.read()
+    # file.close()
+    # mailserver.sendmail(CONFIG['SMTP']['USERNAME'], 'theo.julien@cy-tech.fr', msg)

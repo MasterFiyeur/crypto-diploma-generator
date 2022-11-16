@@ -16,7 +16,7 @@ app = Flask(__name__)
 @app.route('/mail', methods=['GET'])
 def mail():
     try:
-        send_mail()
+        send_mail("85d73059-1212-4f40-b138-220d067d9bdf.png", "julientheo@cy-tech.fr")
     except Exception as e:
         raise e
 
