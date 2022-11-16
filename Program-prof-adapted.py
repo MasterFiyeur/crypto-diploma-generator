@@ -70,7 +70,7 @@ choix_defaut = 1
 # cacher(mon_image, message_a_traiter)
 # mon_image.save("stegano_"+nom_fichier)
 # else :
-# nom_fichier = "b83badf9-15bd-4d15-8535-1d1bb27be3b6.png"
+# nom_fichier = "diploma.png"
 # saisie = input("Entrez la taille du message ")
 # message_a_traiter = int(saisie)
 # mon_image = Image.open(nom_fichier)

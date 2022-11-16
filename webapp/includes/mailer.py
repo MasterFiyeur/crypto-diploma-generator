@@ -10,7 +10,6 @@ import os
 mailserver = smtplib.SMTP(CONFIG['SMTP']['SERVER'], CONFIG['SMTP']['PORT'])
 mailserver.starttls()
 mailserver.login(CONFIG['SMTP']['USERNAME'], CONFIG['SMTP']['PASSWORD'])
-mailserver.set_debuglevel(1)
 
 PUBLIC_KEY_PATH = 'CA/certs/email.pem' 
 PRIVATE_KEY_PATH = 'CA/private/email.key'
@@ -39,22 +38,26 @@ def send_mail(fileName, email):
     msg.attach(msg_content)
     
     # Add the attachment (diploma)
-    with open("tmp/" + fileName + "", 'rb') as f:
+    with open("tmp/" + fileName + ".png", 'rb') as f:
         mime = MIMEBase('image', 'png', filename=MSG_PNG_NAME)
         mime.add_header('Content-Disposition', 'attachment', filename=MSG_PNG_NAME)
         mime.add_header('X-Attachment-Id', '0')
-        mime.add_header('Content-ID', '<0>')
         mime.set_payload(f.read())
         encode_base64(mime)
         msg.attach(mime)
     
     # Create the S/MIME format
+    # Put email in file
     file = open( 'tmp/' + fileName + '.txt', 'w')
     file.write(msg.as_string())
     file.close()
-    # os.system('openssl smime -signer ' + PUBLIC_KEY_PATH + ' -from "' + MSG_FROM + '" -to "' + email + '" -subject "' + MSG_SUBJECT + '" -sign -inkey ' + PRIVATE_KEY_PATH +' -in tmp/' + fileName + '.txt -out tmp/' + fileName + '.txt -passin pass:'+ CONFIG['CA_PASSPHRASE']['EMAIL'])
+    # Sign the email
+    os.system('openssl smime -signer ' + PUBLIC_KEY_PATH + ' -sign -inkey ' + PRIVATE_KEY_PATH +' -subject "' + MSG_SUBJECT + '" -in tmp/' + fileName + '.txt -out tmp/' + fileName + '.txt.smime -passin pass:'+ CONFIG['CA_PASSPHRASE']['EMAIL'])
+    # Read and send the signed email
+    file = open( 'tmp/' + fileName + '.txt.smime', 'r')
+    msg = file.read()
+    file.close()
+    mailserver.sendmail(CONFIG['SMTP']['USERNAME'], email, msg)
     
-    # file = open( 'tmp/' + fileName + '.txt', 'r')
-    # msg = file.read()
-    # file.close()
-    # mailserver.sendmail(CONFIG['SMTP']['USERNAME'], 'theo.julien@cy-tech.fr', msg)
+    # Removing all tmp files
+    os.system('rm tmp/' + fileName + '.*')

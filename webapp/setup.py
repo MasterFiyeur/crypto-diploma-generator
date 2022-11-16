@@ -13,16 +13,6 @@ from includes.steganography import hide_data_in_png
 app = Flask(__name__)
 
 
-@app.route('/mail', methods=['GET'])
-def mail():
-    try:
-        send_mail("85d73059-1212-4f40-b138-220d067d9bdf.png", "julientheo@cy-tech.fr")
-    except Exception as e:
-        raise e
-
-    return "Check Your Inbox !!!"
-
-
 @app.route('/login', methods=['GET'])
 def login_page():
     if ( request.cookies.get('auth_token')):
@@ -104,7 +94,7 @@ def create_diploma():
         fileName = str(uuid.uuid4())
         hide_data_in_png(fileName, validated_data['firstName'], validated_data['lastName'], validated_data['certificateName'])
         # TODO : Create QR code with our signature
-        # TODO : Send PNG file by email
+        send_mail(fileName, validated_data['email'])
         return jsonify({'message': 'success'}), 200
     else :
         return jsonify({'message': 'Invalid OTP'}), 403
