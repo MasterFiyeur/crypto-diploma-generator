@@ -165,14 +165,14 @@ body.active {
 	margin-bottom: 0;
 }
 
-.modal-body .error-msg {
+.error-msg {
 	margin-bottom: 0.5em;
 	text-align: center;
 	color: var(--error);
 	display: none;
 }
 
-.modal-body .error-msg.active {
+.error-msg.active {
 	display: block;
 }
 

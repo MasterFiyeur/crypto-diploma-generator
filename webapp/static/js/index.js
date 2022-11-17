@@ -11,6 +11,9 @@ const OTP = document.getElementById('OTP');
 const OTPErrorMsg = document.getElementById('OTP-error-msg');
 const OTPSuccessMsg = document.getElementById('OTP-success-msg');
 
+const diplomaFile = document.getElementById('certificate');
+const DiplomaErrorMsg = document.getElementById('diploma-error-msg');
+
 function toggleForm() {
   formBx.classList.toggle('active');
   body.classList.toggle('active');
@@ -107,5 +110,33 @@ function createDiploma() {
 }
 
 function verify(){
-	console.log("diplomat verified");
+  /* Verify file length and type */
+  if (diplomaFile.files.length === 0) {
+    DiplomaErrorMsg.classList.add('active');
+    DiplomaErrorMsg.innerText = "Please select a file.";
+    return;
+  } else if (diplomaFile.files[0].type !== 'image/png') {
+    DiplomaErrorMsg.classList.add('active');
+    DiplomaErrorMsg.innerText = "The file must be a PNG.";
+    return;
+  }
+  DiplomaErrorMsg.classList.add('remove');
+
+  const formData = new FormData();
+  formData.append("file", diplomaFile.files[0]);
+  const requestOptions = {
+    headers: {
+        "Content-Type": diplomaFile.files[0].contentType, // This way, the Content-Type value in the header will always match the content type of the file
+    },
+    mode: "no-cors",
+    method: "POST",
+    files: diplomaFile.files[0],
+    body: formData,
+  };
+
+  fetch("/api/verify", requestOptions).then(
+    (response) => {
+      console.log(response.data);
+    }
+  );
 }
