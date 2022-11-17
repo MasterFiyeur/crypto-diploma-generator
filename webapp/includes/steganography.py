@@ -88,5 +88,12 @@ def recover_data_from_png(fileName):
     image = Image.open('tmp/' + fileName + '.png')
     message = recover(image, length)
     data = message[:64].decode("utf-8").split(';')
-    ts_signature = message[64:]
-    return data[0], data[1], data[2].rstrip('\x00'), ts_signature
+    
+    file = open("tmp/" + fileName + ".ts", "wb")
+    file.write(message[64:])
+    file.close
+    file = open("tmp/" + fileName + ".data", "wb")
+    file.write(message[:64])
+    file.close
+    return data[0], data[1], data[2].rstrip('\x00')
+

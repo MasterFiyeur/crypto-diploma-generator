@@ -4,7 +4,6 @@ import os # Environment variables
 import datetime as dt # Date and time management library
 import jwt # JSON Web Tokens
 import uuid
-import json
 from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
@@ -118,7 +117,7 @@ def verify_diploma():
     # Verify the diploma
     fileName = str(uuid.uuid4())
     file.save(os.path.join('tmp', fileName + '.png'))
-    firstName, lastName, diploma, ts_signature = recover_data_from_png(fileName)
+    firstName, lastName, diploma = recover_data_from_png(fileName)
     # TODO : Verify time stamp signature and get timestamp
     # TODO : Verify QR code with our signature
     return jsonify({
