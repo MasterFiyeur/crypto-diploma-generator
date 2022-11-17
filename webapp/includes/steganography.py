@@ -97,3 +97,14 @@ def recover_data_from_png(fileName):
     file.close
     return data[0], data[1], data[2].rstrip('\x00')
 
+def verify_ts(fileName):
+    os.system("openssl ts -verify -in tmp/" + fileName + ".ts -CAfile resources/cacert.pem -untrusted resources/tsa.crt -data tmp/" + fileName + ".data > tmp/" + fileName + ".tsv")
+    verification = open("tmp/" + fileName + ".tsv", "r").read().find("Verification: OK") != -1
+    if verification:
+        os.system("openssl ts -reply -in tmp/" + fileName + ".ts -text -out tmp/" + fileName + ".timestamp")
+        timestamp = open("tmp/" + fileName + ".timestamp", "r").read()
+        timestamp = timestamp[timestamp.find('Time stamp: ')+12:timestamp.find('GMT')+3]
+    else:
+        timestamp = "Invalid"
+    os.system('rm tmp/' + fileName + '*')
+    return verification, timestamp
