@@ -26,9 +26,9 @@
 				<button class="swapBtnCreate" onclick="toggleForm()">Create</button>
 				<form action="javascript:verify()">
 					<h3>Verify diploma</h3>
+					<div id="diploma-error-msg" class="error-msg">Error message</div>
 					<div class="inputBx">
-						<span>PNG file</span>
-						<input type="file" id="certificate" placeholder="PNG file"/>
+						<input type="file" id="certificate" placeholder="PNG file" accept="image/png"/>
 					</div>
 					<div class="inputBx">
 						<input type="submit" value="Verify">

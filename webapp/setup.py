@@ -4,6 +4,7 @@ import os # Environment variables
 import datetime as dt # Date and time management library
 import jwt # JSON Web Tokens
 import uuid
+import json
 from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
@@ -98,6 +99,38 @@ def create_diploma():
         return jsonify({'message': 'success'}), 200
     else :
         return jsonify({'message': 'Invalid OTP'}), 403
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() == 'png'
+
+@app.route('/api/verify', methods=['POST'])
+def verify_diploma():
+    # Check if the post request has the file part
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        # Verify the diploma
+        fileName = str(uuid.uuid4())
+        file.save(os.path.join('tmp', fileName + '.png'))
+        # TODO : Get data from stegano
+        # TODO : Verify time stamp signature and get timestamp
+        # TODO : Verify QR code with our signature
+        return jsonify({
+            'user': {
+                'firstName': 'John',
+                'lastName': 'Doe',
+                'certitifacteName': 'Diploma of Python',
+                'timestamp': '2020-01-01 00:00:00'
+            },
+            'tsSignature': True,
+            'qrSignature': True
+        }), 200
+    return jsonify({'message': 'Nothing'}), 400
+    
 
 # Flask run
 if __name__ == "__main__":
