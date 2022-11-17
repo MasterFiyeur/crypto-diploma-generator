@@ -9,7 +9,7 @@ from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
 from includes.totp import totp
-from includes.steganography import hide_data_in_png
+from includes.steganography import hide_data_in_png, recover_data_from_png
 
 app = Flask(__name__)
 
@@ -106,30 +106,31 @@ def allowed_file(filename):
 
 @app.route('/api/verify', methods=['POST'])
 def verify_diploma():
-    # Check if the post request has the file part
+    # User input validation
     if 'file' not in request.files:
         return jsonify({'message': 'No file part'}), 400
     file = request.files['file']
     if file.filename == '':
         return jsonify({'message': 'No selected file'}), 400
-    if file and allowed_file(file.filename):
-        # Verify the diploma
-        fileName = str(uuid.uuid4())
-        file.save(os.path.join('tmp', fileName + '.png'))
-        # TODO : Get data from stegano
-        # TODO : Verify time stamp signature and get timestamp
-        # TODO : Verify QR code with our signature
-        return jsonify({
-            'user': {
-                'firstName': 'John',
-                'lastName': 'Doe',
-                'certitifacteName': 'Diploma of Python',
-                'timestamp': '2020-01-01 00:00:00'
-            },
-            'tsSignature': True,
-            'qrSignature': True
-        }), 200
-    return jsonify({'message': 'Nothing'}), 400
+    if not file or not allowed_file(file.filename):
+        return jsonify({'message': 'Invalid file'}), 400
+
+    # Verify the diploma
+    fileName = str(uuid.uuid4())
+    file.save(os.path.join('tmp', fileName + '.png'))
+    firstName, lastName, diploma, ts_signature = recover_data_from_png(fileName)
+    # TODO : Verify time stamp signature and get timestamp
+    # TODO : Verify QR code with our signature
+    return jsonify({
+        'user': {
+            'firstName': firstName,
+            'lastName': lastName,
+            'certitifacteName': diploma,
+            'timestamp': '2020-01-01 00:00:00'
+        },
+        'tsSignature': True,
+        'qrSignature': True
+    }), 200
     
 
 # Flask run
