@@ -1,6 +1,10 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 import qrcode
+import glob
+import cv2
+import pandas as pd
+import pathlib
 from includes.cryptog import *
 
 
@@ -23,7 +27,6 @@ def draw_data(name, firstname, formation):
     return img
 
 
-
 def draw_qrcode(data, img):
     position = (1417,931)
     myQrcode = qrcode.QRCode(
@@ -40,10 +43,7 @@ def draw_qrcode(data, img):
     
     img.paste(myQrcode_img, position)
     return img
-
-
-
-        
+   
         
 def generate_diploma(name, firstname, formation, uuid):
     
@@ -65,3 +65,7 @@ def generate_diploma(name, firstname, formation, uuid):
     
     return img  
         
+        
+        
+        
+    
