@@ -9,6 +9,7 @@ from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
 from includes.totp import totp
 from includes.steganography import hide_data_in_png
+from includes.png_editor import generate_diploma
 
 app = Flask(__name__)
 
@@ -92,8 +93,8 @@ def create_diploma():
     if validated_data['OTP'] == totp(CONFIG['OTP_KEY']):
         # Create string to hide
         fileName = str(uuid.uuid4())
+        generate_diploma(validated_data['lastName'], validated_data['firstName'], validated_data['certificateName'], fileName)
         hide_data_in_png(fileName, validated_data['firstName'], validated_data['lastName'], validated_data['certificateName'])
-        # TODO : Create QR code with our signature
         send_mail(fileName, validated_data['email'])
         return jsonify({'message': 'success'}), 200
     else :
