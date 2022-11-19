@@ -124,7 +124,7 @@ def verify_diploma():
         'user': {
             'firstName': firstName,
             'lastName': lastName,
-            'certitifacteName': diploma,
+            'certificateName': diploma,
             'timestamp': timestamp
         },
         'tsSignature': ts_verify,
