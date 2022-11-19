@@ -171,7 +171,7 @@ function verify(){
               verifyTimestampIcon.classList.remove("bi-check-circle-fill", "checked");
               verifyTimestamp.innerText = "not verified";
             }
-            if (data.tsSignature) {
+            if (data.qrSignature) {
               verifySignatureIcon.classList.add("bi-check-circle-fill", "checked");
               verifySignatureIcon.classList.remove("bi-x-circle-fill", "wrong");
               verifySignature.innerText = "verified";

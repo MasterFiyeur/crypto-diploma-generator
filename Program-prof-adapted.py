@@ -61,14 +61,14 @@ choix_defaut = 1
 # choix = saisie or choix_defaut
 
 # if choix == 1:
-# nom_fichier = "diplome.png"
-# file = open("ef738bc9-44a0-4620-8b36-a4980dd4c662.data", "rb")
+# nom_fichier = "resources/diploma-template.png"
+# file = open("286471ed-6d25-481a-b356-7737c7a3ca95.ts", "rb")
 # message_a_traiter = file.read()
 # file.close()
 # print ("Longueur message : ",len(message_a_traiter))
 # mon_image = Image.open(nom_fichier)
 # cacher(mon_image, message_a_traiter)
-# mon_image.save("stegano_"+nom_fichier)
+# mon_image.save("stegano_test.png")
 # else :
 # nom_fichier = "diploma.png"
 # saisie = input("Entrez la taille du message ")

@@ -35,7 +35,6 @@ def hide_data_in_png(fileName, firstName, lastName, diploma):
     # Final size : 5558 bytes
     # Format : 'firstname;lastname;diploma' (filled by \00 to length 64) then 'timestamp_signature'
     bytes_to_hide = str.encode(toHide) + r.content
-    open('tmp/' + fileName + '.ts_before', 'wb').write(r.content)
     
     # Create image and hide data
     diploma = Image.open("resources/diploma-template.png")
