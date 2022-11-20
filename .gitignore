@@ -1,4 +1,5 @@
 myenv/
 webapp/etc/settings.py
-
+.vscode/
 __pycache__/
+test.py

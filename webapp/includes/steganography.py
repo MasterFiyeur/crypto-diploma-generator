@@ -37,7 +37,7 @@ def hide_data_in_png(fileName, firstName, lastName, diploma):
     bytes_to_hide = str.encode(toHide) + r.content
     
     # Create image and hide data
-    diploma = Image.open("resources/diploma-template.png")
+    diploma = Image.open(f"tmp/{fileName}.png")
     hide(diploma, bytes_to_hide)
     diploma.save("tmp/" + fileName + ".png")
 
@@ -111,5 +111,4 @@ def verify_ts(fileName):
         timestamp = timestamp[timestamp.find('Time stamp: ')+12:timestamp.find('GMT')+3]
     else:
         timestamp = "Invalid"
-    os.system('rm tmp/' + fileName + '*')
     return verification, timestamp

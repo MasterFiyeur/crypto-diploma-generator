@@ -1,7 +1,11 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 import qrcode
-import pyqrcodeng as pyqrcode
+import glob
+import cv2
+import pandas as pd
+import pathlib
+from includes.cryptog import *
 
 
 DIR = os.getcwd()
@@ -10,59 +14,82 @@ NAME_FONT = ImageFont.truetype(os.path.join(DIR,'resources/FiraCode.ttf'), 80)
 FORMATION_FONT = ImageFont.truetype(os.path.join(DIR,'resources/FiraCode.ttf'), 120)
 FONT_COLOR = (0, 0, 0)
 
-def draw_data(name, firstname, formation, filename):
-    img = Image.open(os.path.join(DIR,'resources/diploma-template.png'))
+def draw_data(name, firstname, formation):
+    img = Image.open(os.path.join(DIR,f'resources/diploma-template.png'))
     W, H = img.size
-    img = Image.open(os.path.join(DIR,'resources/diploma-template.png'))
     draw = ImageDraw.Draw(img)
-    names = f'{name.upper()} {firstname.lower().capitalize()}'
+    names = f'{firstname.lower().capitalize()} {name.upper()}'
     _, _, w, h = draw.textbbox((0, 0), names, font=NAME_FONT)
     _, _, w2, h2 = draw.textbbox((0, 0), formation, font=FORMATION_FONT)
     draw.text(((W-w)/2, (H-h)/2-50), names, font=NAME_FONT, fill=FONT_COLOR)
     draw.text(((W-w2)/2, (H-h2)/2+75), formation, font=FORMATION_FONT, fill=FONT_COLOR)
-    img.save(os.path.join(DIR,f'tmp/{filename}.png'))
     return img
 
 
-
-def draw_qrcode(img, filename):
+def draw_qrcode(data, img):
+    position = (1417,931)
+    myQrcode = qrcode.QRCode(
+        version = 1,
+        border = 3,
+        box_size = 3,
+    )
     
-    f = open(f'tmp/{filename}.data', 'rb')
-    data = f.read()
+    myQrcode.add_data(data)
+    myQrcode.make(fit=True)
+    myQrcode_img = myQrcode.make_image(fill_color="black", back_color="white")
     
-    print(data)
+    img.paste(myQrcode_img, position)
+    return img
+   
+        
+def generate_diploma(name, firstname, formation, uuid):
     
-    # os.system(f'openssl dgst -sign {DIR}/CA/private/serveur.key -keyform PEM -sha256 -out tmp/{filename}.data.sign -binary "{data}"')
+    data = firstname.replace(';', '') + ";" + name.replace(';', '') + ";" + formation.replace(';', '')
+    if (len(data) > 64):
+        raise Exception("Too much data to hide")
+    else :
+        data = data + '\0'* (64 - len(data))
+
+    signed_data = signCertificate(data)
+    signed_data = base64.b64encode(signed_data)
+        
+    img = draw_data(name, firstname, formation)
+    img = draw_qrcode(signed_data, img)
     
-    # position = (1417,931)
-    # myQrcode = qrcode.QRCode(
-    #     version = 1,
-    #     border = 0,
-    # )
+    img.save(os.path.join(DIR,f'tmp/{uuid}.png'))
     
-    # myQrcode.add_data(b'a')
-    # myQrcode.make()
-    # myQrcode_img = myQrcode.make_image(fill_color="black", back_color="white")
+    return img  
+        
+        
+def verify_signature(fileName, firstname, lastname, diploma):
+    data = data = firstname.replace(';', '') + ";" + lastname.replace(';', '') + ";" + diploma.replace(';', '')
+    if (len(data) > 64):
+        raise Exception("Too much data to hide")
+    else :
+        data = data + '\0'* (64 - len(data))
     
+    im = Image.open(os.path.join('tmp', fileName + '.png'))
 
-    # myQrcode_img.save(os.path.join(DIR,f'tmp/qrcode_test.png'))
+    width, height = im.size
+
+    left = 1418
+    top = 3 * height / 4 + 2
+    right = width - 100
+    bottom = height - 75
+
+    im1 = im.crop((left, top, right, bottom))
+
+    im1.save('tmp/qrcode.png')
+
+    img = cv2.imread('tmp/qrcode.png')
+    detect = cv2.QRCodeDetector()
+    value, points, _ = detect.detectAndDecode(img)
+    signature = base64.b64decode(value)
+    verif = verifySignature(data, signature)
     
-    
-    # img.paste(myQrcode_img, position)
-    # img.save(os.path.join(DIR,f'tmp/{filename}.png'))
-    # f.close()
-    # img.show()
-
-
-
-
-# myName = 'Name'
-# MyFirstName = 'Firstname'
-# myFormation = 'Formation'
-# data= b'0010\x00'
-# myImage = draw_data(myName, MyFirstName, myFormation)
-# myQRcode = draw_qrcode(data, myImage)
-
-
-
-
+    os.system('rm tmp/' + fileName + '*')
+    os.system('rm tmp/' + 'qrcode.png')
+    if verif == None:
+        return True
+    else:
+        return False
