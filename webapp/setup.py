@@ -8,8 +8,8 @@ from includes.decorator import token_required # Decorator
 from etc.settings import CONFIG # Settings
 from includes.mailer import send_mail # Mailer
 from includes.totp import totp
-from includes.steganography import hide_data_in_png
-from includes.png_editor import generate_diploma
+from includes.steganography import hide_data_in_png, recover_data_from_png, verify_ts
+from includes.png_editor import generate_diploma, verify_signature
 
 app = Flask(__name__)
 
@@ -120,7 +120,8 @@ def verify_diploma():
     file.save(os.path.join('tmp', fileName + '.png'))
     firstName, lastName, diploma = recover_data_from_png(fileName)
     ts_verify, timestamp = verify_ts(fileName)
-    # TODO : Verify QR code with our signature
+    qr_verify = verify_signature(fileName, firstName, lastName, diploma)
+    print(qr_verify)
     return jsonify({
         'user': {
             'firstName': firstName,
@@ -129,7 +130,7 @@ def verify_diploma():
             'timestamp': timestamp
         },
         'tsSignature': ts_verify,
-        'qrSignature': True
+        'qrSignature': qr_verify
     }), 200
     
 

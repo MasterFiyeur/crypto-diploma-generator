@@ -111,5 +111,4 @@ def verify_ts(fileName):
         timestamp = timestamp[timestamp.find('Time stamp: ')+12:timestamp.find('GMT')+3]
     else:
         timestamp = "Invalid"
-    os.system('rm tmp/' + fileName + '*')
     return verification, timestamp

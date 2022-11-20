@@ -4,17 +4,17 @@ from etc.settings import CONFIG # Settings
 
 
 
-def signWithCertificate(data): 
+def signCertificate(data): 
     
     passphrase = CONFIG['CA_PASSPHRASE']['SERVER']
     passphrase = bytes(passphrase, 'utf-8')
-    privateKey = open("CA/private/serveur.key").read() 
-    PKey = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, privateKey, passphrase) 
-    sign = OpenSSL.crypto.sign(PKey, data, "sha256") 
+    privKeyPath = open("CA/private/serveur.key").read() 
+    privKey = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, privKeyPath, passphrase) 
+    sign = OpenSSL.crypto.sign(privKey, data, "sha256") 
     return sign 
  
 def verifySignature(data, sign): 
-    rawCert = open("CA/certs/serveur.pem").read() 
-    cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, rawCert) 
-    verification = OpenSSL.crypto.verify(cert, sign, data, 'sha256') 
-    return verification
+    certPath = open("CA/certs/serveur.pem").read() 
+    cert = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, certPath) 
+    verif = OpenSSL.crypto.verify(cert, sign, data, 'sha256')
+    return verif
