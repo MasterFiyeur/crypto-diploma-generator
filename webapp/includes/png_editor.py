@@ -87,8 +87,6 @@ def verify_signature(fileName, firstname, lastname, diploma):
     signature = base64.b64decode(value)
     verif = verifySignature(data, signature)
     
-    os.system('rm tmp/' + fileName + '*')
-    os.system('rm tmp/' + 'qrcode.png')
     if verif == None:
         return True
     else:

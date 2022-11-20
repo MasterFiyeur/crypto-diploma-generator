@@ -118,10 +118,23 @@ def verify_diploma():
     # Verify the diploma
     fileName = str(uuid.uuid4())
     file.save(os.path.join('tmp', fileName + '.png'))
-    firstName, lastName, diploma = recover_data_from_png(fileName)
-    ts_verify, timestamp = verify_ts(fileName)
-    qr_verify = verify_signature(fileName, firstName, lastName, diploma)
-    print(qr_verify)
+    try:
+        firstName, lastName, diploma = recover_data_from_png(fileName)
+    except:
+        firstName = "Not found"
+        lastName = "Not found"
+        diploma = "Not found"
+    try:    
+        ts_verify, timestamp = verify_ts(fileName)
+    except:
+        ts_verify = False
+        timestamp = "Invalid"
+    try:
+        qr_verify = verify_signature(fileName, firstName, lastName, diploma)
+    except:
+        qr_verify = False
+    os.system('rm tmp/' + fileName + '*')
+    os.system('rm tmp/qrcode.png')
     return jsonify({
         'user': {
             'firstName': firstName,
