@@ -26,9 +26,9 @@
 				<button class="swapBtnCreate" onclick="toggleForm()">Create</button>
 				<form action="javascript:verify()">
 					<h3>Verify diploma</h3>
+					<div id="diploma-error-msg" class="error-msg">Error message</div>
 					<div class="inputBx">
-						<span>PNG file</span>
-						<input type="file" id="certificate" placeholder="PNG file"/>
+						<input type="file" id="certificate" placeholder="PNG file" accept="image/png"/>
 					</div>
 					<div class="inputBx">
 						<input type="submit" value="Verify">
@@ -77,10 +77,11 @@
 				<div class="inputBx">
 					<input type="text" id="OTP" placeholder="OTP" maxlength="6"/>
 				</div>
+				<a href="http://localhost:5000/One-Time-Password" target="_blank" rel="noopener noreferrer">You can get the code here</a>
 			</div>
 			<div class=" d-flex justify-content-around mb-3 OTP-buttons">
 				<button type="button" onclick="hideModal()">Cancel</button>
-				<button type="button" onclick="createDiploma()">Confirm</button>
+				<button type="button" onclick="createDiploma()" id="confirmOTP">Confirm</button>
 			</div>
 		</div>
 		</div>
@@ -99,6 +100,28 @@
 			</div>
 			<div class="d-flex justify-content-end mb-3">
 				<button type="button" class="success-modal-button mx-3" onclick="hideSuccessModal()">Cancel</button>
+			</div>
+		</div>
+		</div>
+	</div>
+
+	<!-- Modal 3 -->
+	<div class="modal fade" id="verify-modal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+			<h5 class="modal-title">Diploma informations</h5>
+			</div>
+			<div class="modal-body d-flex justify-content-center flex-column modal-body-verify">
+				<p>First name : <b><span id="verify-first-name"></span></b></p>
+				<p>Last name : <b><span id="verify-last-name"></span></b></p>
+				<p>Certificate name : <b><span id="verify-certificate-name"></span></b></p>
+				<p>Created at : <b><span id="verify-time"></span></b></p>
+				<p class="d-flex justify-content-center align-items-center"><i id="timestamp-icon" class="d-flex bi bi-check-circle-fill checked me-2"></i><b>Timestamp <span id="verify-timestamp"></span></b></p>
+				<p class="d-flex justify-content-center align-items-center"><i id="signature-icon" class="d-flex bi bi-x-circle-fill wrong me-2"></i><b>Authenticity <span id="verify-signature"></span></b></p>
+			</div>
+			<div class="d-flex justify-content-end mb-3">
+				<button type="button" class="success-modal-button mx-3" onclick="hideVerifyModal()">Close</button>
 			</div>
 		</div>
 		</div>

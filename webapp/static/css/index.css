@@ -1,3 +1,4 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css");
 body {
 	display: flex;
 	justify-content: center;
@@ -165,14 +166,25 @@ body.active {
 	margin-bottom: 0;
 }
 
-.modal-body .error-msg {
+.modal-body a {
+	margin-top: 0.5em;
+	text-align: center;
+}
+
+.modal-body-verify p {
+	text-align: center;
+}
+
+
+
+.error-msg {
 	margin-bottom: 0.5em;
 	text-align: center;
 	color: var(--error);
 	display: none;
 }
 
-.modal-body .error-msg.active {
+.error-msg.active {
 	display: block;
 }
 
@@ -209,6 +221,14 @@ body.active {
 
 .OTP-buttons button:last-child {
 	background: var(--dark-primary);
+}
+
+.checked {
+	color: var(--success);
+}
+
+.wrong {
+	color: var(--error);
 }
 
 @media (max-width: 768px) {

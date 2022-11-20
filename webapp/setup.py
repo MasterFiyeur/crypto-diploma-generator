@@ -100,6 +100,39 @@ def create_diploma():
     else :
         return jsonify({'message': 'Invalid OTP'}), 403
 
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() == 'png'
+
+@app.route('/api/verify', methods=['POST'])
+def verify_diploma():
+    # User input validation
+    if 'file' not in request.files:
+        return jsonify({'message': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'message': 'No selected file'}), 400
+    if not file or not allowed_file(file.filename):
+        return jsonify({'message': 'Invalid file'}), 400
+
+    # Verify the diploma
+    fileName = str(uuid.uuid4())
+    file.save(os.path.join('tmp', fileName + '.png'))
+    firstName, lastName, diploma = recover_data_from_png(fileName)
+    ts_verify, timestamp = verify_ts(fileName)
+    # TODO : Verify QR code with our signature
+    return jsonify({
+        'user': {
+            'firstName': firstName,
+            'lastName': lastName,
+            'certificateName': diploma,
+            'timestamp': timestamp
+        },
+        'tsSignature': ts_verify,
+        'qrSignature': True
+    }), 200
+    
+
 # Flask run
 if __name__ == "__main__":
     if not os.path.exists('webapp/etc/settings.py'):
