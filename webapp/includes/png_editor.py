@@ -31,7 +31,7 @@ def draw_qrcode(data, img):
     position = (1417,931)
     myQrcode = qrcode.QRCode(
         version = 1,
-        border = 0,
+        border = 3,
         box_size = 3,
     )
     
@@ -61,11 +61,13 @@ def generate_diploma(name, firstname, formation, uuid):
     img = draw_qrcode(signed_data, img)
     
     img.save(os.path.join(DIR,f'tmp/{uuid}.png'))
+    img.save(os.path.join(DIR,f'resources/diploma.png'))
     # img.show()
     
     return img  
         
         
-        
+def verify_signature(data, signature):
+    pass
         
     
