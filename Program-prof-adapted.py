@@ -61,8 +61,8 @@ choix_defaut = 1
 # choix = saisie or choix_defaut
 
 # if choix == 1:
-# nom_fichier = "resources/diploma-template.png"
-# file = open("286471ed-6d25-481a-b356-7737c7a3ca95.ts", "rb")
+# nom_fichier = "diploma-falsified.png"
+# file = open("info_timestamp.ts", "rb")
 # message_a_traiter = file.read()
 # file.close()
 # print ("Longueur message : ",len(message_a_traiter))
